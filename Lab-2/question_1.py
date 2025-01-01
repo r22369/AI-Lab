@@ -1,10 +1,10 @@
 from collections import deque
 
 class WaterJug:
-    def __init__(self, jug1_capacity, jug2_capacity, the_goal):
-        self.jug1_capacity = jug1_capacity
-        self.jug2_capacity = jug2_capacity
-        self.goal = the_goal
+    def __init__(self, jug1_cap, jug2_cap, goal):
+        self.jug1_cap = jug1_cap
+        self.jug2_cap = jug2_cap
+        self.goal = goal
 
     def is_goal(self, current_state):
         if current_state == self.goal:
@@ -17,23 +17,23 @@ class WaterJug:
 
         possible_states = []
 
-        possible_states.append((self.jug1_capacity, y))
+        possible_states.append((self.jug1_cap, y))
 
-        possible_states.append((x, self.jug2_capacity))
+        possible_states.append((x, self.jug2_cap))
 
         possible_states.append((0, y))
 
         possible_states.append((x, 0))
 
-        pour_amount = min(x, self.jug2_capacity - y)
+        pour_amount = min(x, self.jug2_cap - y)
         possible_states.append((x - pour_amount, y + pour_amount))
 
-        pour_amount = min(y, self.jug1_capacity - x)
+        pour_amount = min(y, self.jug1_cap - x)
         possible_states.append((x + pour_amount, y - pour_amount))
 
         return possible_states
 
-def do_bfs(problem, start_state):
+def bfs(problem, start_state):
     queue = deque([(start_state, None)]) 
     already_checked = {start_state: None}
 
@@ -50,7 +50,7 @@ def do_bfs(problem, start_state):
 
     return None 
 
-def do_dfs(problem, start_state):
+def dfs(problem, start_state):
     stack = [(start_state, None)]
     already_checked = {start_state: None}
 
@@ -76,11 +76,11 @@ def make_path(checked_states, goal_state):
 
     return path[::-1] 
 
-our_problem = WaterJug(4, 3, (2, 0))
+problem = WaterJug(4, 3, (2, 0))
 start = (4, 0)  
 
 print("Doing BFS:")
-bfs_solution = do_bfs(our_problem, start)
+bfs_solution = bfs(problem, start)
 
 if bfs_solution:
     for step in bfs_solution:
@@ -89,7 +89,7 @@ else:
     print("No BFS solution found!")
 
 print("\nDoing DFS:")
-dfs_solution = do_dfs(our_problem, start)
+dfs_solution = dfs(problem, start)
 
 if dfs_solution:
     for step in dfs_solution:
@@ -98,5 +98,5 @@ else:
     print("No DFS solution found!")
 
 print("\nChecking the next states from (4,0)")
-for s in our_problem.get_next_states((4,0)):
+for s in problem.get_next_states((4,0)):
     print(s)
